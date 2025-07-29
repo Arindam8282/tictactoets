@@ -3,15 +3,15 @@ import MainMenuImage from "assets/main-menu.png";
 import MainMenuButton from "components/Buttons/MainMenuButton/MainMenuButton";
 
 const Menus = [
-  { title: "Player vs Player", link: "game" },
   {
-    title: "Player vs AI",
+    title: "Play Online",
+    link: "game/id",
+  },{
+    title: "Play with computer",
     link: "game/ai",
   },
-  {
-    title: "Multiplayer",
-    link: "game/id",
-  },
+  { title: "Player vs Player offline", link: "game" },
+  
   {
     title: "Stats",
     link: "stats",
