@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/tictactoets.git/static/css/main.773282a8.css",
+    "main.js": "/tictactoets.git/static/js/main.6473e1c8.js",
+    "static/js/982.131cbe57.chunk.js": "/tictactoets.git/static/js/982.131cbe57.chunk.js",
+    "static/js/138.c7080bda.chunk.js": "/tictactoets.git/static/js/138.c7080bda.chunk.js",
+    "static/js/628.17d43c8e.chunk.js": "/tictactoets.git/static/js/628.17d43c8e.chunk.js",
+    "static/js/922.2f412123.chunk.js": "/tictactoets.git/static/js/922.2f412123.chunk.js",
+    "static/js/987.d52e87a0.chunk.js": "/tictactoets.git/static/js/987.d52e87a0.chunk.js",
+    "static/js/949.ec44c32e.chunk.js": "/tictactoets.git/static/js/949.ec44c32e.chunk.js",
+    "static/js/453.44377a28.chunk.js": "/tictactoets.git/static/js/453.44377a28.chunk.js",
+    "static/media/main-menu.png": "/tictactoets.git/static/media/main-menu.03882b26de439d35d9ba.png",
+    "static/media/texture.jpg": "/tictactoets.git/static/media/texture.7a5ebddeba9351430fa2.jpg",
+    "index.html": "/tictactoets.git/index.html",
+    "main.773282a8.css.map": "/tictactoets.git/static/css/main.773282a8.css.map",
+    "main.6473e1c8.js.map": "/tictactoets.git/static/js/main.6473e1c8.js.map",
+    "982.131cbe57.chunk.js.map": "/tictactoets.git/static/js/982.131cbe57.chunk.js.map",
+    "138.c7080bda.chunk.js.map": "/tictactoets.git/static/js/138.c7080bda.chunk.js.map",
+    "628.17d43c8e.chunk.js.map": "/tictactoets.git/static/js/628.17d43c8e.chunk.js.map",
+    "922.2f412123.chunk.js.map": "/tictactoets.git/static/js/922.2f412123.chunk.js.map",
+    "987.d52e87a0.chunk.js.map": "/tictactoets.git/static/js/987.d52e87a0.chunk.js.map",
+    "949.ec44c32e.chunk.js.map": "/tictactoets.git/static/js/949.ec44c32e.chunk.js.map",
+    "453.44377a28.chunk.js.map": "/tictactoets.git/static/js/453.44377a28.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.773282a8.css",
+    "static/js/main.6473e1c8.js"
+  ]
+}

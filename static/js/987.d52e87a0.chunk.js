@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunktictactoe=self.webpackChunktictactoe||[]).push([[987],{987:(e,t,s)=>{s.r(t),s.d(t,{default:()=>l});var a=s(43),c=s(579);const l=()=>(0,c.jsx)(a.Fragment,{children:(0,c.jsxs)("h1",{className:"text-5xl font-chilanka font-bold w-full flex items-center justify-center mt-5",children:[(0,c.jsx)("span",{className:"text-red-600",children:"TIC"}),(0,c.jsx)("span",{className:"text-green-700",children:"TAC"}),(0,c.jsx)("span",{className:"text-blue-400",children:"TOE"})]})})}}]);
+//# sourceMappingURL=987.d52e87a0.chunk.js.map
