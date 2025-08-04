@@ -6,7 +6,6 @@ import { aiPlayers, useGame } from "contexts/GameContext";
 import GameOverScreen from "../GameOverScreen/GameOverScreen";
 import AiPlayers from "components/AiPlayers/AiPlayers";
 
-type GameType = "pvp" | "pvai" | "multiplayer";
 interface AiModeSelection {
   [key: string]: React.ReactElement;
 }

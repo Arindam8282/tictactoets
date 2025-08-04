@@ -5,7 +5,7 @@ import MainMenuButton from "components/Buttons/MainMenuButton/MainMenuButton";
 const Menus = [
   {
     title: "Play Online",
-    link: "game/id",
+    link: "game/create",
   },{
     title: "Play with computer",
     link: "game/ai",
