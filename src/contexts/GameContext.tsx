@@ -27,9 +27,10 @@ interface GameContextType {
   setGameInfo: (info: GameInfo) => void;
   resetGame: () => void;
   resetScore: () => void;
-  handleGameOver: (newBoard: CellValue[][])=> void;
-  setAiPlayer:(player:string)=>void;
+  handleGameOver: (newBoard: CellValue[][]) => void;
+  setAiPlayer: (player: string) => void;
   aiPlayer: string;
+  gameId?: string;
 }
 interface Player {
   name: string;
@@ -66,44 +67,52 @@ const defaultGameInfo: GameInfo = {
     score: 0,
   },
 };
-export interface AiPlayerValue{
-  value: string,
-  name: string,
-  method: Function
+export interface AiPlayerValue {
+  value: string;
+  name: string;
+  method: Function;
 }
-export interface AiPlayer{
-  [key:string]: AiPlayerValue;
+export interface AiPlayer {
+  [key: string]: AiPlayerValue;
 }
-export const aiPlayers:AiPlayer={
-  e:{
-    value:'e',
-    name:"Easy",
-    method: easyPlayerVsComputer
+export const aiPlayers: AiPlayer = {
+  e: {
+    value: "e",
+    name: "Easy",
+    method: easyPlayerVsComputer,
   },
-  m:{
-    value:'m',
-    name:"Medium",
-    method: hardPlayerVsComputer
+  m: {
+    value: "m",
+    name: "Medium",
+    method: hardPlayerVsComputer,
   },
-  h:{
-    value:'h',
-    name:"Hard",
-    method: bestPlayerVsComputer
-  }
-}
+  h: {
+    value: "h",
+    name: "Hard",
+    method: bestPlayerVsComputer,
+  },
+};
+type GameType = "pvp" | "pvai" | "online";
 const GameContext = createContext<GameContextType | undefined>(undefined);
 interface GameProviderProps {
   children: ReactNode;
-  gameType: string;
+  gameType: GameType;
+  onlinePlayer?: CellValue;
+  gameId?:string;
 }
-export const GameProvider = ({ children, gameType }: GameProviderProps) => {
+export const GameProvider = ({
+  children,
+  gameType,
+  onlinePlayer,
+  gameId
+}: GameProviderProps) => {
   const [board, setBoard] = useState<CellValue[][]>(defaultBoard);
-  const [currentPlayer, setCurrentPlayer] = useState<CellValue>('o');
+  const [currentPlayer, setCurrentPlayer] = useState<CellValue>("o");
   const [gameInfo, setGameInfo] = useState<GameInfo>(defaultGameInfo);
   const [gameWinner, setGameWinner] = useState<
     UniformResult<CellValue> | false
   >(false);
-  const [aiPlayer,setAiPlayer] = useState<string>('e');
+  const [aiPlayer, setAiPlayer] = useState<string>("e");
 
   useEffect(() => {
     handleGameOperations();
@@ -111,12 +120,16 @@ export const GameProvider = ({ children, gameType }: GameProviderProps) => {
 
   const handleGameOperations = async () => {
     if (gameType === "pvai") {
-      if(gameInfo["me"].weapon !== currentPlayer && !gameWinner){
-        let newBoard = await aiPlayers[aiPlayer].method(board, currentPlayer);   
+      if (gameInfo["me"].weapon !== currentPlayer && !gameWinner) {
+        let newBoard = await aiPlayers[aiPlayer].method(board, currentPlayer);
         handleGameOver(newBoard);
         setBoard([...newBoard]);
         setCurrentPlayer(currentPlayer === "o" ? "x" : "o");
-      } 
+      }
+    }
+    if (gameType === "online") {
+      gameInfo["me"] = gameInfo[onlinePlayer || "o"];
+      setGameInfo({ ...gameInfo });
     }
   };
 
@@ -146,6 +159,7 @@ export const GameProvider = ({ children, gameType }: GameProviderProps) => {
     <GameContext.Provider
       value={{
         gameType,
+        gameId,
         board,
         setBoard,
         currentPlayer,
@@ -158,7 +172,7 @@ export const GameProvider = ({ children, gameType }: GameProviderProps) => {
         resetScore,
         gameInfo,
         setGameInfo,
-        handleGameOver
+        handleGameOver,
       }}
     >
       {children}
