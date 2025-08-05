@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createGame } from "utility/gameApi";
+import { socket } from "utility/socket";
 
 interface Props{
  
@@ -8,10 +9,11 @@ interface Props{
 const CreateGame = ({}: Props) => {
     const navigate = useNavigate();
     useEffect(() => {
-    createGame().then(game => {
-        navigate(`/game/${game.id}?player=o`);
-    });
-  }, []);
+        socket.emit("findGame",{});
+        socket.on("gameFound",({game})=>{
+            navigate(`/game/${game.id}?player=${game.currentPlayer}`);
+        });
+    }, []);
     return ( 
         <div>
             Creating game ...

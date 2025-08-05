@@ -10,13 +10,12 @@ import {
   CellValue,
   easyPlayerVsComputer,
   hardPlayerVsComputer,
-  isBoardEmpty,
   isGameOver,
   UniformResult,
 } from "utility/gameFunctions";
 
 interface GameContextType {
-  gameType: string;
+  gameType: GameType;
   board: CellValue[][];
   setBoard: (board: CellValue[][]) => void;
   currentPlayer: CellValue;
@@ -37,7 +36,7 @@ interface Player {
   weapon: string;
   score: number;
 }
-interface GameInfo {
+export interface GameInfo {
   [key: string]: Player;
 }
 const defaultBoard: CellValue[][] = [
@@ -92,7 +91,7 @@ export const aiPlayers: AiPlayer = {
     method: bestPlayerVsComputer,
   },
 };
-type GameType = "pvp" | "pvai" | "online";
+export type GameType = "pvp" | "pvai" | "online";
 const GameContext = createContext<GameContextType | undefined>(undefined);
 interface GameProviderProps {
   children: ReactNode;
@@ -113,7 +112,7 @@ export const GameProvider = ({
     UniformResult<CellValue> | false
   >(false);
   const [aiPlayer, setAiPlayer] = useState<string>("e");
-
+  console.log("gameInfo",gameInfo);
   useEffect(() => {
     handleGameOperations();
   }, [board]);
@@ -148,11 +147,11 @@ export const GameProvider = ({
 
   const resetGame = () => {
     setBoard(defaultBoard);
-    setCurrentPlayer("o");
+    setCurrentPlayer(gameInfo.me.weapon as CellValue);
     setGameWinner(false);
   };
   const resetScore = () => {
-    setGameInfo(defaultGameInfo);
+    setGameInfo(JSON.parse(JSON.stringify(defaultGameInfo)));
   };
 
   return (

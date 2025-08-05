@@ -18,6 +18,7 @@ const GameScreen = ({}: GameScreenProps) => {
     gameType,
     setAiPlayer,
     aiPlayer,
+    resetScore,
   } = useGame();
   const aiSelection: AiModeSelection = {
     pvai: (
@@ -34,7 +35,11 @@ const GameScreen = ({}: GameScreenProps) => {
         <div className="flex w-full justify-between">
           <MainMenuButton title="Main Menu" link="/" />
           {aiSelection[gameType]}
-          <MainMenuButton title="Reset Score" color="red" link="/" />
+          <MainMenuButton
+            title="Reset Score"
+            color="red"
+            onClick={resetScore}
+          />
         </div>
         <div className="flex w-full justify-center">
           <Game />
@@ -59,11 +64,14 @@ const GameScreen = ({}: GameScreenProps) => {
             weapon="x"
           />
         </div>
-        
       </div>
       <div className="mt-[-84%] flex w-full h-[101%]">
         {gameWinner && (
-          <GameOverScreen message={`${gameWinner.value} has won the match`} />
+          <GameOverScreen
+            gameType={gameType}
+            gameInfo={gameInfo}
+            gameWinner={gameWinner}
+          />
         )}
       </div>
     </React.Fragment>

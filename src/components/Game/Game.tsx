@@ -5,6 +5,8 @@ import { useGame } from "contexts/GameContext";
 import { CellValue, to2DArray } from "utility/gameFunctions";
 import GameOverBorder from "./GameOverBorder/GameOverBorder";
 import { socket } from "utility/socket";
+import Turn from "./GameTurn/Turn";
+import { FindingMatch } from "./FindingMatch/FindingMatch";
 
 const boxes: string[] = [
   " border-r-8 border-b-8 border-gray-400 ",
@@ -20,6 +22,14 @@ const boxes: string[] = [
 interface ElementMap {
   [key: string]: React.ReactElement;
 }
+interface RoomInfo {
+  totalPlayersCount: number;
+  numberOfClients: number;
+}
+const defaultRoom: RoomInfo = {
+  totalPlayersCount: 0,
+  numberOfClients: 2,
+};
 interface GameProps {}
 const Game = ({}: GameProps) => {
   const {
@@ -32,36 +42,53 @@ const Game = ({}: GameProps) => {
     gameWinner,
     gameInfo,
     handleGameOver,
+    resetGame,
+    resetScore
   } = useGame();
-
+  const [roomInfo, setRoomInfo] = useState<RoomInfo>(defaultRoom);
   const getShape: ElementMap = {
     o: <CircleShape />,
     x: <CrossShape />,
   };
 
   const makeMove = (newBoard: CellValue[][]) => {
-    console.log("moveSend",newBoard,currentPlayer);
-    socket.emit("makeMove", { gameId: gameId, newBoard, player:currentPlayer });
+    socket.emit("makeMove", {
+      gameId: gameId,
+      newBoard,
+      player: currentPlayer,
+    });
   };
 
   useEffect(() => {
+    console.log("new game begin");
+    
+    resetScore();
+    resetGame();
     if (gameType === "online") {
       socket.on("moveMade", ({ newBoard, player }) => {
-        console.log("moveReceived",newBoard,player);
-        if(player!==gameInfo["me"].weapon) {
-          handleGameOver(newBoard);
-          setBoard([...newBoard]);
-          setCurrentPlayer(player === "o" ? "x" : "o");
+        handleGameOver(newBoard);
+        setBoard([...newBoard]);
+        setCurrentPlayer(player === "o" ? "x" : "o");
+      });
+
+      socket.on(
+        "playerJoined",
+        ({ player, numberOfClients, totalPlayersCount }) => {
+          console.log(`${player} joined`, numberOfClients, totalPlayersCount);
+          setRoomInfo({ numberOfClients, totalPlayersCount });
         }
-      });
-
-      socket.on("playerJoined", ({ player }) => {
-        console.log(`${player} joined`);
-      });
-
+      );
+      socket.on(
+        "playerLeft",
+        ({ socketId, numberOfClients }) => {
+          console.log(`${socketId} left`, numberOfClients);
+          setRoomInfo({ ...roomInfo,numberOfClients });
+        }
+      );
       return () => {
         socket.off("moveMade");
         socket.off("playerJoined");
+        socket.emit('leaveGame', { gameId, player:gameInfo.me.weapon });
       };
     }
   }, []);
@@ -81,10 +108,9 @@ const Game = ({}: GameProps) => {
       if (gameType === "online") makeMove(newBoard);
     }
   };
-
-  return (
-    <React.Fragment>
-      <div className="grid grid-cols-3 grid-rows-3 w-72 h-72  relative">
+  const GameBoxes = () => {
+    return (
+      <React.Fragment>
         {boxes.map((box, index) => (
           <div
             key={index}
@@ -97,6 +123,27 @@ const Game = ({}: GameProps) => {
         {gameWinner && gameWinner.type !== "TG" && (
           <GameOverBorder gameOverType={gameWinner.type} />
         )}
+      </React.Fragment>
+    );
+  };
+  const gameRenderLogic: any = {
+    "true-false": <FindingMatch />,
+    "false-false": <GameBoxes />,
+    "true-true": <GameBoxes />,
+  };
+  return (
+    <React.Fragment>
+      <div className="flex flex-col items-center">
+      {roomInfo.numberOfClients === roomInfo.totalPlayersCount && <Turn player={currentPlayer} gameInfo={gameInfo} />}
+      <div className="grid grid-cols-3 grid-rows-3 w-72 h-72  relative">
+        {
+          gameRenderLogic[
+            `${gameType === "online"}-${
+              roomInfo.numberOfClients === roomInfo.totalPlayersCount
+            }`
+          ]
+        }
+      </div>
       </div>
     </React.Fragment>
   );
