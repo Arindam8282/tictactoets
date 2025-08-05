@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunktictactoe=self.webpackChunktictactoe||[]).push([[680],{680:(e,t,s)=>{s.r(t),s.d(t,{default:()=>o});var c=s(43),r=s(615),a=s(864),n=s(579);const o=e=>{let{}=e;const t=(0,r.Zp)();return(0,c.useEffect)(()=>{a.s.emit("findGame",{}),a.s.on("gameFound",e=>{let{game:s}=e;t(`/game/${s.id}?player=${s.currentPlayer}`)})},[]),(0,n.jsx)("div",{children:"Creating game ..."})}},864:(e,t,s)=>{s.d(t,{s:()=>c});const c=(0,s(104).io)("https://tictactoe-server-528z.onrender.com",{transports:["websocket"]})}}]);
+//# sourceMappingURL=680.b81c11b1.chunk.js.map
